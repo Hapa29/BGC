@@ -1,12 +1,12 @@
 var controller = {
 
-	var game;
+	game: null,
 
-	function init(){
-		game = new Phaser.Game(800, 600, Phaser.CANVAS, 'phaser-example', { create: create, render: render });
-	}
+	init: function(){
+		game = new Phaser.Game(800, 600, Phaser.CANVAS, 'phaser-example', { create: controller.create, render: controller.render });
+	},
 
-	function create() {
+	create: function() {
 
 	    game.stage.backgroundColor = '#454645';
 
@@ -21,9 +21,9 @@ var controller = {
 	    game.input.addPointer();
 	    game.input.addPointer();
 
-	}
+	},
 
-	function render() {
+	render: function() {
 
 	    //  Just renders out the pointer data when you touch the canvas
 	    game.debug.pointer(game.input.mousePointer);

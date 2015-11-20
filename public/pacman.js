@@ -1,25 +1,24 @@
 var pacman = {
 
-	var game;
+	game: null,
+	sprite: null,
 
-	function init() {
-		game = new Phaser.Game(800, 600, Phaser.AUTO, 'phaser-example', { preload: preload, create: create, update: update });
-	}
+	upKey: null,
+	downKey: null,
+	leftKey: null,
+	rightKey: null,
 
-	function preload() {
+	init: function() {
+		game = new Phaser.Game(800, 600, Phaser.AUTO, 'phaser-example', { preload: pacman.preload, create: pacman.create, update: pacman.update });
+	},
+
+	preload: function() {
 
 		game.load.image('phaser', 'assets/sprites/phaser-dude.png');
 
-	}
+	},
 
-	var sprite;
-
-	var upKey;
-	var downKey;
-	var leftKey;
-	var rightKey;
-
-	function create() {
+	create: function() {
 
 		game.stage.backgroundColor = '#736357';
 
@@ -32,9 +31,9 @@ var pacman = {
 	    leftKey = game.input.keyboard.addKey(Phaser.Keyboard.LEFT);
 	    rightKey = game.input.keyboard.addKey(Phaser.Keyboard.RIGHT);
 
-	}
+	},
 
-	function update() {
+	update: function() {
 
 		if (upKey.isDown)
 		{
