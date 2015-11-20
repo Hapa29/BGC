@@ -3,10 +3,7 @@ var pacman = {
 	game: null,
 	sprite: null,
 
-	upKey: null,
-	downKey: null,
-	leftKey: null,
-	rightKey: null,
+	direction: 0,
 
 	init: function() {
 		game = new Phaser.Game(800, 600, Phaser.AUTO, 'phaser-example', { preload: pacman.preload, create: pacman.create, update: pacman.update });
@@ -24,34 +21,31 @@ var pacman = {
 
 		sprite = game.add.sprite(300, 300, 'phaser');
 
-	    //  In this example we'll create 4 specific keys (up, down, left, right) and monitor them in our update function
-
-	    upKey = game.input.keyboard.addKey(Phaser.Keyboard.UP);
-	    downKey = game.input.keyboard.addKey(Phaser.Keyboard.DOWN);
-	    leftKey = game.input.keyboard.addKey(Phaser.Keyboard.LEFT);
-	    rightKey = game.input.keyboard.addKey(Phaser.Keyboard.RIGHT);
-
 	},
 
 	update: function() {
 
-		if (upKey.isDown)
+		if (direction == 3)
 		{
 			sprite.y--;
 		}
-		else if (downKey.isDown)
+		else if (direction == 1)
 		{
 			sprite.y++;
 		}
 
-		if (leftKey.isDown)
+		if (direction == 4)
 		{
 			sprite.x--;
 		}
-		else if (rightKey.isDown)
+		else if (direction == 2)
 		{
 			sprite.x++;
 		}
 
-	}
+	},
+
+	changeDirection: function (move) {
+        direction = move;
+    }
 }

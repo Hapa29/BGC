@@ -45,6 +45,7 @@ jQuery(function($){
 
         playerMovement : function(move) {
             console.log("Move player "+move);
+            pacman.changeDirection(move);
         }
 
     };
@@ -66,7 +67,6 @@ jQuery(function($){
         init: function () {
             App.cacheElements();
             App.initScreen();
-            App.bindEvents();
 
             // Initialize the fastclick library
             FastClick.attach(document.body);
@@ -92,15 +92,6 @@ jQuery(function($){
             }else if(App.myRole == 'controller'){
                 controller.init();
             }
-        },
-
-        /**
-         * Create some click handlers for the various buttons that appear on-screen.
-         */
-        bindEvents: function () {
-            // Host
-
-            // Player
         },
 
         

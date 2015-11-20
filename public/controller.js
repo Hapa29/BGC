@@ -1,6 +1,8 @@
 var controller = {
 
 	game: null,
+	prevX: Array.apply(null, new Array(10)).map(Number.prototype.valueOf,0),
+	
 
 	init: function(){
 		game = new Phaser.Game(800, 600, Phaser.CANVAS, 'phaser-example', { create: controller.create, render: controller.render });
@@ -12,16 +14,62 @@ var controller = {
 
 	    //  By default Phaser only starts 2 pointers (enough for 2 fingers at once)
 
-	    //  addPointer tells Phaser to add another pointer to Input, so here we are basically saying "allow up to 6 pointers + the mouse"
+	    App.prevX = ;
+            App.;
 
-	    //  Note: on iOS as soon as you use 6 fingers you'll active the minimise app gesture - and there's nothing we can do to stop that, sorry
+	    gameAreaController.addEventListener('touchstart', initiateControllerInput, false);
+            gameAreaController.addEventListener('touchmove', controllerInput, false);
+            gameAreaController.addEventListener('touchend', controllerInput, false);
+            function initiateControllerInput(event){
+                App.reflectMovement(event, 0);
+                App.prevX = Array.apply(null, new Array(10)).map(Number.prototype.valueOf,event.changedTouches[0].pageX);
+                App.prevY = Array.apply(null, new Array(10)).map(Number.prototype.valueOf,event.changedTouches[0].pageY);
+            }
+            function controllerInput(event){
+                //console.log(App.prevX);
+                var move = controllerLogic(event, App.prevX, App.prevY);
+                App.reflectMovement(event, move);
+                App.updatePrevArray(App.prevX, event.changedTouches[0].pageX);
+                App.updatePrevArray(App.prevY, event.changedTouches[0].pageY);
+            }
 
-	    game.input.addPointer();
-	    game.input.addPointer();
-	    game.input.addPointer();
-	    game.input.addPointer();
+
+        updatePrevArray : function (prev,newMove){
+            prev.push(newMove);
+            prev.shift();
+        },
 
 	},
+
+	function controllerLogic(event, prevX, prevY){
+ 	var move = 0;
+ 	var movementThreshold = 10;
+ 	var x = event.changedTouches[0].pageX;
+ 	var y = event.changedTouches[0].pageY;
+ 	if(event.type != 'touchend'){
+ 		var dX = x - prevX[0];
+ 		var dY = y - prevY[0];
+ 		if(Math.abs(dX) > movementThreshold || Math.abs(dY) > movementThreshold){		
+ 			if(Math.abs(dX) > Math.abs(dY)){
+ 				if(dX > 0){
+ 					move = 2;
+ 				}else{
+ 					move = 4;
+ 				}
+ 			}else{
+ 				if(dY > 0){
+ 					move = 3;
+ 				}else{
+ 					move = 1;
+ 				}
+ 			}
+ 		}else{
+ 			move = -1;
+ 		}
+ 	}
+ 	console.log(event.type);
+ 	return move;
+ }
 
 	render: function() {
 
