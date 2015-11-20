@@ -5,7 +5,8 @@ var controller = {
 
 	touchWasDown: false,
 	
-	init: function(){
+	init: function(sock){
+		controller.socket = sock;
 		game = new Phaser.Game(800, 600, Phaser.CANVAS, 'phaser-example', { create: controller.create, update: controller.update, render: controller.render });
 	},
 
@@ -14,22 +15,23 @@ var controller = {
 	},
 
 	update: function() {
-		if(game.input.pointer1.isDown && !touchWasDown){
+		if(game.input.pointer1.isDown && !controller.touchWasDown){
 			controller.prevX = Array.apply(null, new Array(10)).map(Number.prototype.valueOf,game.input.pointer1.x);
 			controller.prevY = Array.apply(null, new Array(10)).map(Number.prototype.valueOf,game.input.pointer1.y);
 		}else{
-			var move = controller.controllerLogic(game.input.pointer1.x, game.input.pointer1.y);
-			IO.controllerMoved(move);
+			var move = controller.controllerLogic(game.input.pointer1, game.input.pointer1.x, game.input.pointer1.y);
+			controller.socket.emit('controllerInput',move);
+			console.log('Sending '+move);
 			controller.updatePrevArray(controller.prevX, game.input.pointer1.x);
 			controller.updatePrevArray(controller.prevY, game.input.pointer1.y);
 		}
 
 	},
 
-	controllerLogic: function(x, y){
+	controllerLogic: function(pointer, x, y){
  	var move = 0;
  	var movementThreshold = 10;
- 	if(event.type != 'touchend'){
+ 	if(!pointer.isUp){
  		var dX = x - controller.prevX[0];
  		var dY = y - controller.prevY[0];
  		if(Math.abs(dX) > movementThreshold || Math.abs(dY) > movementThreshold){		

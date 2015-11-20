@@ -94,7 +94,7 @@ jQuery(function($){
             if(App.myRole == 'host'){
                 pacman.init();
             }else if(App.myRole == 'controller'){
-                controller.init();
+                controller.init(IO.socket);
             }
         },
 
@@ -102,6 +102,6 @@ jQuery(function($){
     };
 
     IO.init();
-    App.init();
+    App.init(IO);
 
 }($));
