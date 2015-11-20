@@ -46,6 +46,10 @@ jQuery(function($){
         playerMovement : function(move) {
             console.log("Move player "+move);
             pacman.changeDirection(move);
+        },
+
+        controllerMoved : function(move) {
+            IO.socket.emit('controllerInput',move);
         }
 
     };

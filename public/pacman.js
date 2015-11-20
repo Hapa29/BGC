@@ -1,7 +1,6 @@
 var pacman = {
 
-	game: null,
-	sprite: null,
+	//sprite: null,
 
 	direction: 0,
 
@@ -25,20 +24,20 @@ var pacman = {
 
 	update: function() {
 
-		if (direction == 3)
+		if (pacman.direction == 3)
 		{
 			sprite.y--;
 		}
-		else if (direction == 1)
+		else if (pacman.direction == 1)
 		{
 			sprite.y++;
 		}
 
-		if (direction == 4)
+		if (pacman.direction == 4)
 		{
 			sprite.x--;
 		}
-		else if (direction == 2)
+		else if (pacman.direction == 2)
 		{
 			sprite.x++;
 		}
@@ -46,6 +45,6 @@ var pacman = {
 	},
 
 	changeDirection: function (move) {
-        direction = move;
+        pacman.direction = move;
     }
 }
