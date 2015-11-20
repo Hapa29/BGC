@@ -2,38 +2,45 @@ var controller = {
 
 	prevX: Array.apply(null, new Array(10)).map(Number.prototype.valueOf,0),
 	prevY: Array.apply(null, new Array(10)).map(Number.prototype.valueOf,0),
-
-	touchWasDown: false,
 	
 	init: function(sock){
 		controller.socket = sock;
-		game = new Phaser.Game(800, 600, Phaser.CANVAS, 'phaser-example', { create: controller.create, update: controller.update, render: controller.render });
+		var gameAreaController = document.getElementById("gameArea");
+            gameAreaController.addEventListener('touchstart', initiateControllerInput, false);
+            gameAreaController.addEventListener('touchmove', controllerInput, false);
+            gameAreaController.addEventListener('touchend', controllerInput, false);
+            function initiateControllerInput(event){
+                controller.prevX = Array.apply(null, new Array(10)).map(Number.prototype.valueOf,event.changedTouches[0].pageX);
+                controller.prevY = Array.apply(null, new Array(10)).map(Number.prototype.valueOf,event.changedTouches[0].pageY);
+            }
+            function controllerInput(event){
+                //console.log(App.prevX);
+                var move = controller.controllerLogic(event, controller.prevX, controller.prevY);
+                //App.reflectMovement(event, move);
+                if(move >=0){
+                	controller.socket.emit('controllerInput',move);
+            	}
+                controller.updatePrevArray(controller.prevX, event.changedTouches[0].pageX);
+                controller.updatePrevArray(controller.prevY, event.changedTouches[0].pageY);
+            }
 	},
 
-	create: function() {
-	    game.stage.backgroundColor = '#454645';
-	},
+	
 
-	update: function() {
-		if(game.input.pointer1.isDown && !controller.touchWasDown){
-			controller.prevX = Array.apply(null, new Array(10)).map(Number.prototype.valueOf,game.input.pointer1.x);
-			controller.prevY = Array.apply(null, new Array(10)).map(Number.prototype.valueOf,game.input.pointer1.y);
-		}else{
-			var move = controller.controllerLogic(game.input.pointer1, game.input.pointer1.x, game.input.pointer1.y);
-			controller.socket.emit('controllerInput',move);
-			console.log('Sending '+move);
-			controller.updatePrevArray(controller.prevX, game.input.pointer1.x);
-			controller.updatePrevArray(controller.prevY, game.input.pointer1.y);
-		}
+	updatePrevArray : function (prev,newMove){
+            prev.push(newMove);
+            prev.shift();
+        },
 
-	},
 
-	controllerLogic: function(pointer, x, y){
+     controllerLogic: function(event, prevX, prevY){
  	var move = 0;
  	var movementThreshold = 10;
- 	if(!pointer.isUp){
- 		var dX = x - controller.prevX[0];
- 		var dY = y - controller.prevY[0];
+ 	var x = event.changedTouches[0].pageX;
+ 	var y = event.changedTouches[0].pageY;
+ 	if(event.type != 'touchend'){
+ 		var dX = x - prevX[0];
+ 		var dY = y - prevY[0];
  		if(Math.abs(dX) > movementThreshold || Math.abs(dY) > movementThreshold){		
  			if(Math.abs(dX) > Math.abs(dY)){
  				if(dX > 0){
@@ -52,19 +59,7 @@ var controller = {
  			move = -1;
  		}
  	}
+ 	console.log(event.type);
  	return move;
- },
-
-	updatePrevArray : function (prev,newMove){
-            prev.push(newMove);
-            prev.shift();
-        },
-
-	
-
-	render: function() {
-	    //  Just renders out the pointer data when you touch the canvas
-	    game.debug.pointer(game.input.pointer1);
-
-	}
+ }
 }

@@ -94,6 +94,7 @@ jQuery(function($){
             if(App.myRole == 'host'){
                 pacman.init();
             }else if(App.myRole == 'controller'){
+                document.body.innerHTML = "<div id='gameArea'>Hello</div>";
                 controller.init(IO.socket);
             }
         },

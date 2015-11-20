@@ -1,7 +1,5 @@
 var pacman = {
 
-	//sprite: null,
-
 	direction: 0,
 
 	init: function() {
@@ -24,11 +22,11 @@ var pacman = {
 
 	update: function() {
 
-		if (pacman.direction == 3)
+		if (pacman.direction == 1)
 		{
 			sprite.y--;
 		}
-		else if (pacman.direction == 1)
+		else if (pacman.direction == 3)
 		{
 			sprite.y++;
 		}
