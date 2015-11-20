@@ -44,8 +44,8 @@ jQuery(function($){
         },
 
         playerMovement : function(move) {
-            console.log("Move player "+move);
-            pacman.changeDirection(move);
+            //console.log("Move player "+move);
+            riht.changeDirection(move);
         },
 
         controllerMoved : function(move) {
@@ -92,7 +92,7 @@ jQuery(function($){
          */
         initScreen: function () {
             if(App.myRole == 'host'){
-                pacman.init();
+                riht.init();
             }else if(App.myRole == 'controller'){
                 document.body.innerHTML = "<div id='gameArea'>Hello</div>";
                 controller.init(IO.socket);

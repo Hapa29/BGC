@@ -59,7 +59,7 @@ var controller = {
  			move = -1;
  		}
  	}
- 	console.log(event.type);
+ 	//console.log(event.type);
  	return move;
  }
 }
